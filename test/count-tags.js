@@ -5,7 +5,7 @@ const test = require('ava')
 test('tags apply from the suite to the tests', (t) => {
   t.plan(1)
   const source = stripIndent`
-    describe(['@basic'],'parent', () => {
+    describe('parent -@ @basic', () => {
       it('works a', () => {})
       it('works b', () => {})
     })
@@ -18,7 +18,7 @@ test('tags apply from the suite to the tests', (t) => {
 test('tags apply from all parent suites', (t) => {
   t.plan(1)
   const source = stripIndent`
-    describe(['@basic'],'parent', () => {
+    describe('parent -@ @basic', () => {
       describe('inner', () => {
         it('works a', () => {})
         it('works b', () => {})
@@ -33,10 +33,10 @@ test('tags apply from all parent suites', (t) => {
 test('combines all tags', (t) => {
   t.plan(1)
   const source = stripIndent`
-    describe(['@one'], 'parent', () => {
-      describe(['@two', '@three'], 'inner', () => {
-        it(['@four'], 'works a', () => {})
-        it(['@five'], 'works b', () => {})
+    describe('parent -@ @one', () => {
+      describe('inner -@ @two,@three', () => {
+        it('works a -@ @four', () => {})
+        it('works b -@ @five', () => {})
       })
     })
   `

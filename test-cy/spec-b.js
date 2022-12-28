@@ -1,4 +1,4 @@
-describe(["O"],'Suite B', () => {
+describe('Suite B -@ O', () => {
   it('works 1', () => {})
-  it(["A"],'works 2', () => {})
+  it('works 2 -@ A', () => {})
 })

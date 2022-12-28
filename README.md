@@ -23,7 +23,7 @@ The `tests` is a list with each test and suite name, and optional list of tags.
 
 ```js
 // spec.js
-it(['@user'],'works', () => { ... })
+it('works -@ @user', () => { ... })
 // found test names
 // { tests: [{ name: 'works', tags: ['@user'] }] }
 ```
@@ -49,10 +49,10 @@ Often, you want to have each test and see which tags it has and what parent tags
 
 ```js
 // example spec code
-describe(['@user'],'parent', () => {
-  describe(['@auth'],'parent', () => {
-    it(['@one'],'works a', () => {})
-    it(['@one', '@two']'works b', () => {})
+describe('parent -@ @user', () => {
+  describe('parent -@ @auth', () => {
+    it('works a -@ @one', () => {})
+    it('works b -@ @one,@two', () => {})
   })
 })
 ```

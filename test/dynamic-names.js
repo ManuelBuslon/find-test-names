@@ -22,8 +22,8 @@ test('variable as test name then tags', (t) => {
   t.plan(1)
   // instead of a string, this test's name is a variable
   const source = stripIndent`
-    const name = 'works'
-    it(['@first', '@second'], name, () => {})
+    const name = 'works @first @second'
+    it(name, () => {})
   `
   const result = getTestNames(source)
   // console.dir(result, { depth: null })
@@ -32,14 +32,14 @@ test('variable as test name then tags', (t) => {
   t.deepEqual(result, {
     suiteNames: [],
     testNames: [],
-    tests: [{ type: 'test', pending: false, tags: ['@first', '@second'] }],
+    tests: [{ type: 'test', pending: false }],
   })
 })
 
 test('concatenated strings', (t) => {
   t.plan(1)
   const source = stripIndent`
-    it(['@first', '@second'], 'super' + ' ' + 'test', () => {})
+    it('super' + ' ' + 'test @first @second', () => {})
   `
   const result = getTestNames(source)
   // console.dir(result, { depth: null })
@@ -48,7 +48,7 @@ test('concatenated strings', (t) => {
   t.deepEqual(result, {
     suiteNames: [],
     testNames: [],
-    tests: [{ type: 'test', pending: false, tags: ['@first', '@second'] }],
+    tests: [{ type: 'test', pending: false }],
   })
 })
 
@@ -56,9 +56,9 @@ test('member expression', (t) => {
   t.plan(1)
   const source = stripIndent`
     const names = {
-      first: 'my test',
+      first: 'my test @first @second',
     }
-    it(['@first', '@second'], names.first, () => {})
+    it(names.first, () => {})
   `
   const result = getTestNames(source)
   // console.dir(result, { depth: null })
@@ -67,6 +67,6 @@ test('member expression', (t) => {
   t.deepEqual(result, {
     suiteNames: [],
     testNames: [],
-    tests: [{ type: 'test', pending: false, tags: ['@first', '@second'] }],
+    tests: [{ type: 'test', pending: false }],
   })
 })

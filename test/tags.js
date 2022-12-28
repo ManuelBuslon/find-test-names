@@ -6,7 +6,7 @@ test('test with a single string tag', (t) => {
   t.plan(1)
   const source = stripIndent`
     describe('foo', () => {
-      it(['@one'], 'bar', () => {})
+      it('bar -@ @one', () => {})
     })
   `
   const result = getTestNames(source)
@@ -33,7 +33,7 @@ test('test with tags', (t) => {
   t.plan(1)
   const source = stripIndent`
     describe('foo', () => {
-      it(['@one'], 'bar', () => {})
+      it('bar -@ @one', () => {})
     })
   `
   const result = getTestNames(source)
@@ -60,7 +60,7 @@ test('skipped test with tags', (t) => {
   t.plan(1)
   const source = stripIndent`
     describe('foo', () => {
-      it.skip(['@one'], 'bar', () => {})
+      it.skip('bar -@ @one', () => {})
     })
   `
   const result = getTestNames(source)
@@ -86,7 +86,7 @@ test('skipped test with tags', (t) => {
 test('describe with tags', (t) => {
   t.plan(1)
   const source = stripIndent`
-    describe(['@one', '@two'], 'foo', () => {
+    describe('foo -@ @one,@two', () => {
       it('bar', () => {})
     })
   `

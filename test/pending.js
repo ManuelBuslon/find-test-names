@@ -83,7 +83,7 @@ test('skipped suite', (t) => {
 test('pending test with tags without a callback', (t) => {
   t.plan(1)
   const source = stripIndent`
-    it(['@basic'], 'works')
+    it('works -@ @basic')
   `
   const result = getTestNames(source)
   t.deepEqual(result, {
@@ -96,7 +96,7 @@ test('pending test with tags without a callback', (t) => {
 test('pending suite with tags without a callback', (t) => {
   t.plan(1)
   const source = stripIndent`
-    describe(['@basic'], 'works')
+    describe('works -@ @basic')
   `
   const result = getTestNames(source)
   t.deepEqual(result, {

@@ -51,18 +51,18 @@ test('extract complex structure', (t) => {
   const source = stripIndent`
     it('top', () => {})
 
-    describe(['@one', '@two'], 'foo', () => {
+    describe('foo -@ @one,@two', () => {
 
-      describe(['@four'], 'foobar', () => {
-        it(['@three'], 'bar', () => {})
+      describe('foobar -@ @four', () => {
+        it('bar -@ @three', () => {})
 
-        it(['@five'], 'quox', () => {})
+        it('quox -@ @five', () => {})
       });
 
-      it([], 'blipp', () => {})
+      it('blipp', () => {})
     })
 
-    it(['@one'], 'baz', () => {})
+    it('baz -@ @one', () => {})
   `
   const result = getTestNames(source, true)
 
@@ -147,18 +147,18 @@ test('structure with empty suites', (t) => {
   const source = stripIndent`
     it('top', () => {})
 
-    describe(['@one', '@two'], 'foo', () => {
+    describe('foo -@ @one,@two', () => {
       describe('empty before', () => {
         describe('empty before nested', () => {})
       })
 
-      describe(['@four'], 'foobar', () => {
-        it(['@three'], 'bar', () => {})
+      describe('foobar -@ @four', () => {
+        it('bar -@ @three', () => {})
 
-        it(['@five'], 'quox', () => {})
+        it('quox -@ @five', () => {})
       });
 
-      it([], 'blipp', () => {})
+      it('blipp', () => {})
 
       describe('empty after', () => {
         describe('empty after nested', () => {})
@@ -166,7 +166,7 @@ test('structure with empty suites', (t) => {
 
     })
 
-    it(['@one'], 'baz', () => {})
+    it('baz -@ @one', () => {})
   `
   const result = getTestNames(source, true)
 

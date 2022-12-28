@@ -24,16 +24,12 @@ const isItSkip = (node) =>
   (node.callee.object.name === 'it' || node.callee.object.name === 'specify') &&
   node.callee.property.name === 'skip'
 
-const getTags = (source, node) => {
-  if (node.arguments.length < 2) {
-    // pending tests don't have tags
-    return
-  }
-  if (node.arguments[0].type === 'ArrayExpression') {
-    // extract any possible tags
-    const tags = node.arguments[0]
-    const tagsText = source.slice(tags.start, tags.end)
-    return eval(tagsText)
+const getTags = (source) => {
+  if (source != undefined) {
+    const words = source.split('-@ ')
+    if (words.length > 1) {
+      return words[1].split(',').map((tag) => tag.trim())
+    }
   }
 }
 
@@ -79,15 +75,19 @@ const proxy = new Proxy(base, {
 })
 
 const getDescribe = (node, source, pending = false) => {
-  const name = extractTestName(
-    node.arguments[node.arguments[0].type === 'ArrayExpression' ? 1 : 0],
-  )
+  const fullName = extractTestName(node.arguments[0])
+  let name
   const suiteInfo = {
     type: 'suite',
     pending,
   }
-  if (typeof name !== 'undefined') {
+  if (typeof fullName !== 'undefined') {
+    name = fullName.split('-@ ')[0].trim()
     suiteInfo.name = name
+    const tags = getTags(fullName)
+    if (Array.isArray(tags) && tags.length > 0) {
+      suiteInfo.tags = tags
+    }
   }
 
   if (pending) {
@@ -99,19 +99,7 @@ const getDescribe = (node, source, pending = false) => {
     // example: describe("is pending")
     if (node.arguments.length === 1) {
       suiteInfo.pending = true
-    } else if (
-      node.arguments.length === 2 &&
-      node.arguments[0].type === 'ArrayExpression'
-    ) {
-      // the suite has a name and a config object
-      // but now callback, thus it is pending
-      suiteInfo.pending = true
     }
-  }
-
-  const tags = getTags(source, node)
-  if (Array.isArray(tags) && tags.length > 0) {
-    suiteInfo.tags = tags
   }
 
   const suite = {
@@ -129,15 +117,19 @@ const getDescribe = (node, source, pending = false) => {
 }
 
 const getIt = (node, source, pending = false) => {
-  const name = extractTestName(
-    node.arguments[node.arguments[0].type === 'ArrayExpression' ? 1 : 0],
-  )
+  const fullName = extractTestName(node.arguments[0])
+  let name
   const testInfo = {
     type: 'test',
     pending,
   }
-  if (typeof name !== 'undefined') {
+  if (typeof fullName !== 'undefined') {
+    name = fullName.split('-@ ')[0].trim()
     testInfo.name = name
+    const tags = getTags(fullName)
+    if (Array.isArray(tags) && tags.length > 0) {
+      testInfo.tags = tags
+    }
   }
 
   if (!pending) {
@@ -145,19 +137,7 @@ const getIt = (node, source, pending = false) => {
     // example: it("is pending")
     if (node.arguments.length === 1) {
       testInfo.pending = true
-    } else if (
-      node.arguments.length === 2 &&
-      node.arguments[0].type === 'ArrayExpression'
-    ) {
-      // the test has a name and a config object
-      // but now callback, thus it is pending
-      testInfo.pending = true
     }
-  }
-
-  const tags = getTags(source, node)
-  if (Array.isArray(tags) && tags.length > 0) {
-    testInfo.tags = tags
   }
 
   const test = {
