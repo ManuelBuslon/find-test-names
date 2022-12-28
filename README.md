@@ -52,7 +52,7 @@ Often, you want to have each test and see which tags it has and what parent tags
 describe(['@user'],'parent', () => {
   describe(['@auth'],'parent', () => {
     it(['@one'],'works a', () => {})
-    it('@one', '@two']'works b', () => {})
+    it(['@one', '@two']'works b', () => {})
   })
 })
 ```
