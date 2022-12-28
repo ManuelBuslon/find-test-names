@@ -1,6 +1,6 @@
 const babel = require('@babel/parser')
 const walk = require('acorn-walk')
-const debug = require('debug')('find-test-names')
+const debug = require('debug')('find-test-names-tags')
 const { formatTestList } = require('./format-test-list')
 
 const isDescribeName = (name) => name === 'describe' || name === 'context'
@@ -29,20 +29,11 @@ const getTags = (source, node) => {
     // pending tests don't have tags
     return
   }
-
-  if (node.arguments[1].type === 'ObjectExpression') {
+  if (node.arguments[0].type === 'ArrayExpression') {
     // extract any possible tags
-    const tags = node.arguments[1].properties.find((node) => {
-      return node.key.name === 'tags'
-    })
-    if (tags) {
-      if (tags.value.type === 'ArrayExpression') {
-        const tagsText = source.slice(tags.start, tags.end)
-        return eval(tagsText)
-      } else if (tags.value.type === 'Literal') {
-        return [tags.value.value]
-      }
-    }
+    const tags = node.arguments[0]
+    const tagsText = source.slice(tags.start, tags.end)
+    return eval(tagsText)
   }
 }
 
@@ -88,7 +79,9 @@ const proxy = new Proxy(base, {
 })
 
 const getDescribe = (node, source, pending = false) => {
-  const name = extractTestName(node.arguments[0])
+  const name = extractTestName(
+    node.arguments[node.arguments[0].type === 'ArrayExpression' ? 1 : 0],
+  )
   const suiteInfo = {
     type: 'suite',
     pending,
@@ -108,7 +101,7 @@ const getDescribe = (node, source, pending = false) => {
       suiteInfo.pending = true
     } else if (
       node.arguments.length === 2 &&
-      node.arguments[1].type === 'ObjectExpression'
+      node.arguments[0].type === 'ArrayExpression'
     ) {
       // the suite has a name and a config object
       // but now callback, thus it is pending
@@ -136,7 +129,9 @@ const getDescribe = (node, source, pending = false) => {
 }
 
 const getIt = (node, source, pending = false) => {
-  const name = extractTestName(node.arguments[0])
+  const name = extractTestName(
+    node.arguments[node.arguments[0].type === 'ArrayExpression' ? 1 : 0],
+  )
   const testInfo = {
     type: 'test',
     pending,
@@ -152,7 +147,7 @@ const getIt = (node, source, pending = false) => {
       testInfo.pending = true
     } else if (
       node.arguments.length === 2 &&
-      node.arguments[1].type === 'ObjectExpression'
+      node.arguments[0].type === 'ArrayExpression'
     ) {
       // the test has a name and a config object
       // but now callback, thus it is pending
@@ -501,19 +496,22 @@ function setEffectiveTags(structure) {
  * Visits each individual test in the structure and checks if it
  * has any effective tags from the given list.
  */
-function filterByEffectiveTags(structure, tags) {
+function filterByEffectiveTags(structure, tags, notTags = []) {
   if (typeof structure === 'string') {
     // we got passed the input source code
     // so let's parse it first
     const result = getTestNames(structure, true)
     setEffectiveTags(result.structure)
-    return filterByEffectiveTags(result.structure, tags)
+    return filterByEffectiveTags(result.structure, tags, notTags)
   }
 
   const filteredTests = []
   visitEachTest(structure, (test) => {
     const hasTag = tags.some((tag) => test.effectiveTags.includes(tag))
-    if (hasTag) {
+    const hasNotTag = notTags.some((notTag) =>
+      test.effectiveTags.includes(notTag),
+    )
+    if (hasTag && !hasNotTag) {
       filteredTests.push(test)
     }
   })

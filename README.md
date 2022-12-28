@@ -1,4 +1,4 @@
-# find-test-names [![ci](https://github.com/bahmutov/find-test-names/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/bahmutov/find-test-names/actions/workflows/ci.yml)
+# find-test-names-tags
 
 > Given a Mocha / Cypress spec file, returns the list of suite and test names
 
@@ -6,15 +6,15 @@
 
 ```shell
 # install using NPM, probably as a dev dependency
-$ npm i -D find-test-names
+$ npm i -D find-test-names-tags
 # install using Yarn
-$ yarn add -D find-test-names
+$ yarn add -D find-test-names-tags
 ```
 
 ## Use
 
 ```js
-const { getTestNames } = require('find-test-names')
+const { getTestNames } = require('find-test-names-tags')
 const result = getTestNames(specSourceCode)
 // { "suiteNames": [], "testNames": [], "tests": [] }
 ```
@@ -23,7 +23,7 @@ The `tests` is a list with each test and suite name, and optional list of tags.
 
 ```js
 // spec.js
-it('works', {tags: ['@user']}, () => { ... })
+it(['@user'],'works', () => { ... })
 // found test names
 // { tests: [{ name: 'works', tags: ['@user'] }] }
 ```
@@ -49,16 +49,16 @@ Often, you want to have each test and see which tags it has and what parent tags
 
 ```js
 // example spec code
-describe('parent', { tags: '@user' }, () => {
-  describe('parent', { tags: '@auth' }, () => {
-    it('works a', { tags: '@one' }, () => {})
-    it('works b', () => {})
+describe(['@user'],'parent', () => {
+  describe(['@auth'],'parent', () => {
+    it(['@one'],'works a', () => {})
+    it('@one', '@two']'works b', () => {})
   })
 })
 ```
 
 ```js
-const { getTestNames, setEffectiveTags } = require('find-test-names')
+const { getTestNames, setEffectiveTags } = require('find-test-names-tags')
 const result = getTestNames(source, true)
 setEffectiveTags(result.structure)
 ```
@@ -67,17 +67,17 @@ If you traverse the `result.structure`, the test "works a" will have the `effect
 
 ### filterByEffectiveTags
 
-Once you `setEffectiveTags`, you can filter all tests by an effective tag. For example, to fid all tests with the given tag:
+Once you `setEffectiveTags`, you can filter all tests by an effective tag. For example, to fid all tests with the given tag(@one) and without other tags(@two):
 
 ```js
 const {
   getTestNames,
   setEffectiveTags,
   filterByEffectiveTags,
-} = require('find-test-names')
+} = require('find-test-names-tags')
 const result = getTestNames(source, true)
 setEffectiveTags(result.structure)
-const tests = filterByEffectiveTags(result.structure, ['@one'])
+const tests = filterByEffectiveTags(result.structure, ['@one'], ['@two'])
 ```
 
 Returns individual test objects.
@@ -85,7 +85,7 @@ Returns individual test objects.
 Tip: you can pass the source code and the tags to the `filterByEffectiveTags` function and let it parse it
 
 ```js
-const filtered = filterByEffectiveTags(source, ['@user'])
+const filtered = filterByEffectiveTags(source, ['@user'], ['@two'])
 ```
 
 ### findEffectiveTestTags
@@ -173,29 +173,15 @@ it('works', ...)
 
 ## Debugging
 
-Run with the environment variable `DEBUG=find-test-names` to see verbose logs
+Run with the environment variable `DEBUG=find-test-names-tags` to see verbose logs
 
 ## Small print
 
-Author: Gleb Bahmutov &lt;gleb.bahmutov@gmail.com&gt; &copy; 2021
-
-- [@bahmutov](https://twitter.com/bahmutov)
-- [glebbahmutov.com](https://glebbahmutov.com)
-- [blog](https://glebbahmutov.com/blog)
-- [videos](https://www.youtube.com/glebbahmutov)
-- [presentations](https://slides.com/bahmutov)
-- [cypress.tips](https://cypress.tips)
-- [Cypress Tips & Tricks Newsletter](https://cypresstips.substack.com/)
-- [my Cypress courses](https://cypress.tips/courses)
-
-License: MIT - do anything with the code, but don't blame me if it does not work.
-
-Support: if you find any problems with this module, email / tweet /
-[open issue](https://github.com/bahmutov/find-test-names/issues) on Github
+Author: Manuel Buslon &lt;manuelbuslon22@gmail.com&gt; &copy; 2022
 
 ## MIT License
 
-Copyright (c) 2021 Gleb Bahmutov &lt;gleb.bahmutov@gmail.com&gt;
+Copyright (c) 2022 Manuel Buslon &lt;manuelbuslon22@gmail.com&gt;
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -217,3 +203,7 @@ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
 WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 OTHER DEALINGS IN THE SOFTWARE.
+
+Acknowledgments
+
+* [Gleb Bahmutov](https://github.com/bahmutov), owner of the [find-test-names](https://github.com/bahmutov/find-test-names) repository that was forked.

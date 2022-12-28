@@ -83,7 +83,7 @@ test('passes the test info to the callback', (t) => {
   const source = stripIndent`
     describe('parent', () => {
       describe('inner 1', () => {
-        it('works a', {tags: '@user'}, () => {})
+        it(['@user'], 'works a', () => {})
       })
 
       describe('inner 2', () => {
@@ -114,14 +114,14 @@ test('collects the test tags', (t) => {
   const source = stripIndent`
     describe('parent', () => {
       describe('inner 1', () => {
-        it('works a', {tags: '@user'}, () => {})
+        it(['@user'], 'works a', () => {})
       })
 
       describe('inner 2', () => {
-        it('works b', {tags: ['@tag1', '@tag2']} , () => {})
+        it(['@tag1', '@tag2'], 'works b', () => {})
       })
 
-      it('works c', {tags: '@tag1'}, () => {})
+      it(['@tag1'], 'works c', () => {})
     })
   `
   const result = getTestNames(source, true)

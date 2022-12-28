@@ -6,13 +6,13 @@ const test = require('ava')
 test('finds effective test tags for each test', (t) => {
   t.plan(1)
   const source = stripIndent`
-    describe('parent', {tags: '@user'}, () => {
-      describe('child', {tags: '@auth'}, () => {
-        it('works a', {tags: '@one'}, () => {})
+    describe(['@user'], 'parent', () => {
+      describe(['@auth'], 'child', () => {
+        it(['@one'], 'works a', () => {})
         it('works b', () => {})
       })
     })
-    it('sits at the top', {tags: '@root'}, () => {})
+    it(['@root'], 'sits at the top', () => {})
     it.skip('has no tags')
   `
   const result = findEffectiveTestTags(source)

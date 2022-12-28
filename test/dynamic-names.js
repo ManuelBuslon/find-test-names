@@ -23,7 +23,7 @@ test('variable as test name then tags', (t) => {
   // instead of a string, this test's name is a variable
   const source = stripIndent`
     const name = 'works'
-    it(name, { tags: ['@first', '@second'] }, () => {})
+    it(['@first', '@second'], name, () => {})
   `
   const result = getTestNames(source)
   // console.dir(result, { depth: null })
@@ -39,7 +39,7 @@ test('variable as test name then tags', (t) => {
 test('concatenated strings', (t) => {
   t.plan(1)
   const source = stripIndent`
-    it('super' + ' ' + 'test', { tags: ['@first', '@second'] }, () => {})
+    it(['@first', '@second'], 'super' + ' ' + 'test', () => {})
   `
   const result = getTestNames(source)
   // console.dir(result, { depth: null })
@@ -58,7 +58,7 @@ test('member expression', (t) => {
     const names = {
       first: 'my test',
     }
-    it(names.first, { tags: ['@first', '@second'] }, () => {})
+    it(['@first', '@second'], names.first, () => {})
   `
   const result = getTestNames(source)
   // console.dir(result, { depth: null })

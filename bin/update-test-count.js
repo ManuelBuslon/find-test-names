@@ -3,7 +3,7 @@
 const path = require('path')
 const fs = require('fs')
 const globby = require('globby')
-const debug = require('debug')('find-test-names')
+const debug = require('debug')('find-test-names-tags')
 
 require('simple-bin-help')({
   minArguments: 4,

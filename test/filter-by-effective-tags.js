@@ -7,13 +7,13 @@ const { stripIndent } = require('common-tags')
 const test = require('ava')
 
 const source = stripIndent`
-  describe('parent', {tags: '@user'}, () => {
-    describe('child', {tags: '@auth'}, () => {
-      it('works a', {tags: '@one'}, () => {})
+describe(['@user'],'parent', () => {
+  describe(['@auth'],'child', () => {
+    it(['@one'],'works a', () => {})
       it('works b', () => {})
     })
   })
-  describe('outside', {tags: '@new'}, () => {
+  describe(['@new'], 'outside', () => {
     it('works c', () => {})
   })
 `

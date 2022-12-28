@@ -5,9 +5,9 @@ const test = require('ava')
 test('visits each test with effective tags', (t) => {
   t.plan(3)
   const source = stripIndent`
-    describe('parent', {tags: '@user'}, () => {
-      describe('child', {tags: '@auth'}, () => {
-        it('works a', {tags: '@one'}, () => {})
+    describe(['@user'], 'parent', () => {
+      describe(['@auth'], 'child', () => {
+        it(['@one'], 'works a', () => {})
         it('works b', () => {})
       })
     })

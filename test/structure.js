@@ -51,18 +51,18 @@ test('extract complex structure', (t) => {
   const source = stripIndent`
     it('top', () => {})
 
-    describe('foo', {tags: ['@one', '@two']}, () => {
+    describe(['@one', '@two'], 'foo', () => {
 
-      describe('foobar', {tags: ['@four']}, () => {
-        it('bar', {tags: ['@three']}, () => {})
+      describe(['@four'], 'foobar', () => {
+        it(['@three'], 'bar', () => {})
 
-        it('quox', {tags: ['@five']}, () => {})
+        it(['@five'], 'quox', () => {})
       });
 
-      it('blipp', {tags: []}, () => {})
+      it([], 'blipp', () => {})
     })
 
-    it('baz', {tags: ['@one']}, () => {})
+    it(['@one'], 'baz', () => {})
   `
   const result = getTestNames(source, true)
 
@@ -147,18 +147,18 @@ test('structure with empty suites', (t) => {
   const source = stripIndent`
     it('top', () => {})
 
-    describe('foo', {tags: ['@one', '@two']}, () => {
+    describe(['@one', '@two'], 'foo', () => {
       describe('empty before', () => {
         describe('empty before nested', () => {})
       })
 
-      describe('foobar', {tags: ['@four']}, () => {
-        it('bar', {tags: ['@three']}, () => {})
+      describe(['@four'], 'foobar', () => {
+        it(['@three'], 'bar', () => {})
 
-        it('quox', {tags: ['@five']}, () => {})
+        it(['@five'], 'quox', () => {})
       });
 
-      it('blipp', {tags: []}, () => {})
+      it([], 'blipp', () => {})
 
       describe('empty after', () => {
         describe('empty after nested', () => {})
@@ -166,7 +166,7 @@ test('structure with empty suites', (t) => {
 
     })
 
-    it('baz', {tags: ['@one']}, () => {})
+    it(['@one'], 'baz', () => {})
   `
   const result = getTestNames(source, true)
 
