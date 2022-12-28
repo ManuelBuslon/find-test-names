@@ -1,6 +1,6 @@
 const babel = require('@babel/parser')
 const walk = require('acorn-walk')
-const debug = require('debug')('find-test-names-tags')
+const debug = require('debug')('find-test-names-tags-mocha')
 const { formatTestList } = require('./format-test-list')
 
 const isDescribeName = (name) => name === 'describe' || name === 'context'

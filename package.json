@@ -1,5 +1,5 @@
 {
-  "name": "find-test-names-tags-mocha",
+  "name": "find-test-names-tags-mocha-mocha",
   "version": "1.0.1",
   "description": "Given a Mocha / returns the list of suite and test names",
   "main": "src",
@@ -8,15 +8,15 @@
     "src"
   ],
   "bin": {
-    "find-test-names-tags": "bin/find-test-names.js",
+    "find-test-names-tags-mocha": "bin/find-test-names.js",
     "update-test-count": "bin/update-test-count.js",
     "print-tests": "bin/print-tests.js"
   },
   "scripts": {
     "test": "ava",
     "semantic-release": "semantic-release",
-    "demo": "DEBUG=find-test-names-tags node bin/find-test-names.js demo/spec.js",
-    "demo-update-md": "DEBUG=find-test-names-tags node bin/update-test-count.js out.md 'test-cy/**/*.js'",
+    "demo": "DEBUG=find-test-names-tags-mocha node bin/find-test-names.js demo/spec.js",
+    "demo-update-md": "DEBUG=find-test-names-tags-mocha node bin/update-test-count.js out.md 'test-cy/**/*.js'",
     "demo-print": "node bin/print-tests.js 'test-cy/**/*.js'",
     "stop-only": "stop-only --folder test",
     "prepare": "husky install"

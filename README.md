@@ -1,4 +1,4 @@
-# find-test-names-tags
+# find-test-names-tags-mocha
 
 > Given a Mocha / Cypress spec file, returns the list of suite and test names
 
@@ -6,15 +6,15 @@
 
 ```shell
 # install using NPM, probably as a dev dependency
-$ npm i -D find-test-names-tags
+$ npm i -D find-test-names-tags-mocha
 # install using Yarn
-$ yarn add -D find-test-names-tags
+$ yarn add -D find-test-names-tags-mocha
 ```
 
 ## Use
 
 ```js
-const { getTestNames } = require('find-test-names-tags')
+const { getTestNames } = require('find-test-names-tags-mocha')
 const result = getTestNames(specSourceCode)
 // { "suiteNames": [], "testNames": [], "tests": [] }
 ```
@@ -58,7 +58,7 @@ describe('parent -@ @user', () => {
 ```
 
 ```js
-const { getTestNames, setEffectiveTags } = require('find-test-names-tags')
+const { getTestNames, setEffectiveTags } = require('find-test-names-tags-mocha')
 const result = getTestNames(source, true)
 setEffectiveTags(result.structure)
 ```
@@ -74,7 +74,7 @@ const {
   getTestNames,
   setEffectiveTags,
   filterByEffectiveTags,
-} = require('find-test-names-tags')
+} = require('find-test-names-tags-mocha')
 const result = getTestNames(source, true)
 setEffectiveTags(result.structure)
 const tests = filterByEffectiveTags(result.structure, ['@one'], ['@two'])
@@ -173,7 +173,7 @@ it('works', ...)
 
 ## Debugging
 
-Run with the environment variable `DEBUG=find-test-names-tags` to see verbose logs
+Run with the environment variable `DEBUG=find-test-names-tags-mocha` to see verbose logs
 
 ## Small print
 

@@ -3,7 +3,7 @@
 const path = require('path')
 const fs = require('fs')
 const globby = require('globby')
-const debug = require('debug')('find-test-names-tags')
+const debug = require('debug')('find-test-names-tags-mocha')
 const { getTestNames, formatTestList } = require('..')
 
 require('simple-bin-help')({
