@@ -1,5 +1,5 @@
 {
-  "name": "find-test-names-tags-mocha-mocha",
+  "name": "find-test-names-tags-mocha",
   "version": "1.0.1",
   "description": "Given a Mocha / returns the list of suite and test names",
   "main": "src",
