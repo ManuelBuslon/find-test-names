@@ -1,6 +1,6 @@
 {
   "name": "find-test-names-tags-mocha",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Given a Mocha / returns the list of suite and test names",
   "main": "src",
   "files": [
