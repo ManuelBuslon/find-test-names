@@ -1,6 +1,6 @@
 {
   "name": "find-test-names-tags",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Given a Mocha / Cypress spec file, returns the list of suite and test names",
   "main": "src",
   "files": [
